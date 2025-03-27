@@ -6,17 +6,18 @@ import com.codingwithtashi.springsecurityjwt.repository.UserRepository;
 import com.twilio.Twilio;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
+import lombok.extern.log4j.Log4j2;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @SpringBootApplication
 @OpenAPIDefinition( info = @Info(title = "Spring boot otp authentication",version = "1.0.0"))
+@Log4j2
 public class SpringSecurityJwtApplication {
 	@Autowired
 	private UserRepository repository;
@@ -36,10 +37,12 @@ public class SpringSecurityJwtApplication {
 
 	@PostConstruct
 	public void initUsers() {
-		User user = new User();
-		user.setUserName( "7022752477");
-		List<User> users = Stream.of(user
-		).collect(Collectors.toList());
+		User user1 = new User();
+		user1.setUserName( "7022752477");
+		User user2 = new User();
+		user2.setUserName( "777229511");
+		List<User> users=List.of(user1,user2);
 		repository.saveAll(users);
+		log.debug("We have initialized {} users", users.size());
 	}
 }
